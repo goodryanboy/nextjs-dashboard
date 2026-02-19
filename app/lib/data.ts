@@ -216,3 +216,27 @@ export async function fetchFilteredCustomers(query: string) {
     throw new Error('Failed to fetch customer table.');
   }
 }
+
+export async function fetchCustomersPendingInvoices() {
+  try {
+    const data = await sql`
+      SELECT 
+        customers.name, 
+        customers.image_url,
+        invoices.id as invoice_id, 
+        invoices.amount, 
+        invoices.date
+      FROM 
+        invoices
+      JOIN 
+        customers ON invoices.customer_id = customers.id
+      where 
+        invoices.status = 'pending'
+    `;
+
+    return data;
+  } catch (error) {
+    console.log("Database error: ", error)
+    throw new Error("Failed to fetch customers with pending invoices")
+  }
+}
