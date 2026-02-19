@@ -1,6 +1,7 @@
 import Image from "next/image";
+import { CustomerPendingInvoice } from "@/app/lib/definitions";
 
-export default function CustomersPendingInvoices({ data }: { data?: any }) {
+export default function CustomersPendingInvoices({ data }: { data?: CustomerPendingInvoice[] }) {
     return (
         <div className="w-full">
             <div className="rounded-lg border border-gray-200 bg-white shadow-sm">
@@ -48,7 +49,9 @@ export default function CustomersPendingInvoices({ data }: { data?: any }) {
                                     </td>
                                     <td className="px-6 py-4 text-sm text-gray-900">{invoice.invoice_id}</td>
                                     <td className="px-6 py-4 text-sm text-gray-900">{invoice.amount}</td>
-                                    <td className="px-6 py-4 text-sm text-gray-500">{Date(invoice.date)}</td>
+                                    <td className="px-6 py-4 text-sm text-gray-500">
+                                        {new Date(invoice.date).toLocaleDateString()}
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>

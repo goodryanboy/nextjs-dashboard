@@ -86,3 +86,15 @@ export type InvoiceForm = {
   amount: number;
   status: 'pending' | 'paid';
 };
+
+export type CustomerPendingInvoiceRaw = {
+  name: string;
+  image_url: string;
+  invoice_id: string;
+  amount: number;
+  date: string;
+};
+
+export type CustomerPendingInvoice = Omit<CustomerPendingInvoiceRaw, 'amount'> & {
+  amount: string;
+};

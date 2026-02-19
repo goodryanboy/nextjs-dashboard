@@ -6,6 +6,8 @@ import {
   InvoicesTable,
   LatestInvoiceRaw,
   Revenue,
+  CustomerPendingInvoice,
+  CustomerPendingInvoiceRaw,
 } from './definitions';
 import { formatCurrency } from './utils';
 
@@ -219,7 +221,7 @@ export async function fetchFilteredCustomers(query: string) {
 
 export async function fetchCustomersPendingInvoices() {
   try {
-    const data = await sql`
+    const data = await sql<CustomerPendingInvoiceRaw[]>`
       SELECT 
         customers.name, 
         customers.image_url,
@@ -234,7 +236,11 @@ export async function fetchCustomersPendingInvoices() {
         invoices.status = 'pending'
     `;
 
-    return data;
+    // Format currency for display
+    return data.map(invoice => ({
+      ...invoice,
+      amount: formatCurrency(invoice.amount)
+    }));
   } catch (error) {
     console.log("Database error: ", error)
     throw new Error("Failed to fetch customers with pending invoices")
